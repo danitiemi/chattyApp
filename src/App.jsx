@@ -1,10 +1,26 @@
 import React, {Component} from 'react';
 
-class App extends Component {
+import ChatBar from './ChatBar.jsx';
+import Message from './Message.jsx';
+import MessageList from './MessageList.jsx';
+import NavBar from './NavBar.jsx';
+
+// Load up the application styles
+// require("../styles/application.scss");
+
+export default class App extends React.Component {
   render() {
     return (
-      <h1>Hello React :)</h1>
+      <div>
+        <NavBar />
+        <main className="messages">
+          <Message />
+          <MessageList />
+        </main>
+        <ChatBar />
+      </div>
     );
   }
 }
-export default App;
+
+
