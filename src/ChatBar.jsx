@@ -16,6 +16,7 @@ export default class Chatbar extends Component {
       const currentUser = this.state.username;
       const content = event.target.value;
       this.props.onPost(currentUser, content);
+      event.target.value = "";
     }
   }
 

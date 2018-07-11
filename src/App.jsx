@@ -27,17 +27,16 @@ export default class App extends Component {
     this.onPost = this.onPost.bind(this);
   }
   onPost (username, content) {
-    console.log(this.state);
+    
     const newId = this.state.messages.length + 2;
     const newMessage = {
       id: newId,
       username: username,
       content: content
     };
-    // console.log(newMessage);
     const messages = this.state.messages.concat(newMessage);
     this.setState({messages: messages});
-    console.log()
+  
   }
 
   componentDidMount() {
