@@ -23,8 +23,13 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', function incoming(message) {
-    console.log(message);
+    // console.log(message);
+    console.log(JSON.parse(message));
+    const messageP = JSON.parse(message)
+    console.log('User ' + messageP.username + ' said Hi' );
   });
+
+ 
 
   // ws.send('new message');
 
