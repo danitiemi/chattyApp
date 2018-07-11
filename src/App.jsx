@@ -24,6 +24,20 @@ export default class App extends Component {
         }
       ]
     }
+    this.onPost = this.onPost.bind(this);
+  }
+  onPost (username, content) {
+    console.log(this.state);
+    const newId = this.state.messages.length + 2;
+    const newMessage = {
+      id: newId,
+      username: username,
+      content: content
+    };
+    // console.log(newMessage);
+    const messages = this.state.messages.concat(newMessage);
+    this.setState({messages: messages});
+    console.log()
   }
 
   componentDidMount() {
@@ -38,14 +52,13 @@ export default class App extends Component {
       this.setState({messages: messages})
     }, 3000);
   }
-
   render() {
     
     return (
       <div>
         <NavBar />
         <MessageList messages={ this.state.messages } />
-        <ChatBar currentUser={ this.state.currentUser.name }/>
+        <ChatBar currentUser={ this.state.currentUser.name } onPost={ this.onPost }/>
       </div>
     );
   }
