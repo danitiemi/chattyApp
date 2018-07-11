@@ -25,6 +25,7 @@ export default class App extends Component {
       ]
     }
     this.onPost = this.onPost.bind(this);
+    this.socket = new WebSocket(`ws://localhost:3001/`);
   }
   onPost (username, content) {
     
@@ -34,12 +35,21 @@ export default class App extends Component {
       username: username,
       content: content
     };
-    const messages = this.state.messages.concat(newMessage);
-    this.setState({messages: messages});
-  
+    // const messages = this.state.messages.concat(newMessage);
+    // this.setState({messages: messages});
+    this.socket.send(JSON.stringify(newMessage));
+   
   }
 
+
+
   componentDidMount() {
+    
+    this.socket.onmessage = function (event) {
+      console.log('Connected to server');
+      
+    }
+
     console.log("componentDidMount <App />");
     setTimeout(() => {
       console.log("Simulating incoming message");
