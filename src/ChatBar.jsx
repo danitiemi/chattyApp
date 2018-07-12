@@ -5,17 +5,18 @@ export default class Chatbar extends Component {
   constructor(props) {
     super(props); 
     this.state = { 
-      username: this.props.currentUser,
+      username: '',
       content: '' 
     };
     this.onEnter = this.onEnter.bind(this);
+    this.onNewUserName = this.onNewUserName.bind(this);
   }
 
   onEnter(event) {
     if(event.key === 'Enter') {
-      const currentUser = this.state.username;
+      const user = this.state.username;
       const content = event.target.value;
-      this.props.onPost(currentUser, content);
+      this.props.onPost(user, content);
       event.target.value = "";
     }
   }
@@ -25,11 +26,11 @@ export default class Chatbar extends Component {
   }
 
   render() {
-    const { currentUser } = this.props;
+    // const { currentUser } = this.props;
     
     return (  
         <footer className="chatbar">
-          <input className="chatbar-username" placeholder= { currentUser } />
+          <input className="chatbar-username" placeholder= 'Name' value={ this.state.value } onChange={ this.onNewUserName }/> 
           <input className="chatbar-message" placeholder='Type a message and hit ENTER'  onKeyUp={ this.onEnter }/>
         </footer>
       );
