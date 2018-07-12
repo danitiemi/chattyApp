@@ -39,17 +39,14 @@ export default class App extends Component {
     // const messages = this.state.messages.concat(newMessage);
     // this.setState({messages: messages});
     this.socket.send(JSON.stringify(newMessage));
-
    
   }
-
-
 
   componentDidMount() {
     
     this.socket.onmessage = function (event) {
       console.log('Connected to server');
-      
+      console.log(event);
     }
 
     console.log("componentDidMount <App />");
