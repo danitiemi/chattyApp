@@ -32,8 +32,9 @@ wss.on('connection', (ws) => {
       if ( client.readyState === SocketServer.OPEN ) {
         const parsedMessage = JSON.parse(message);
         parsedMessage['id'] = uuidv4();
-        client.send(JSON.stringify(parsedMessage));
-        console.log(parsedMessage);
+        const stringMessage = JSON.stringify(parsedMessage);
+        client.send(stringMessage);
+        // console.log(parsedMessage);
       }
     });
 
