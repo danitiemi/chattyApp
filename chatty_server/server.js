@@ -20,34 +20,55 @@ const wss = new SocketServer.Server({ server });
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+
+
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', function incoming(message) {
     // console.log(message);
-    console.log(JSON.parse(message));
+    let parsedMessage = JSON.parse(message);
 
-    // Broadcast to everyone else.
-    wss.clients.forEach(function each(client) {
-      if ( client.readyState === SocketServer.OPEN ) {
-        const parsedMessage = JSON.parse(message);
-        parsedMessage['id'] = uuidv4();
-        const stringMessage = JSON.stringify(parsedMessage);
-        client.send(stringMessage);
-        // console.log(parsedMessage);
-      }
-    });
+    switch(parsedMessage.type){
+      case 'postMessage':
+       console.log("we are in messages");
+        // Broadcast to everyone else.
+        wss.clients.forEach(function each(client) {
+          if ( client.readyState === SocketServer.OPEN ) {
+            parsedMessage['id'] = uuidv4();
+            const stringMessage = JSON.stringify(parsedMessage);
+            client.send(stringMessage);
+          }
+          //   if ( parsedMessage.type === 'postNotification' ) {
+          //     parsedMessage['type'] = 'incomingNotification';
+          //     const stringNote = JSON.stringify(parsedMessage);
+          //     client.send(stringNote);
+          //     console.log(stringNote);
+          //   } else {
+              
+          //   }
+          // }
+        });
+        break;
+
+        case 'postNotification':
+          console.log("We received notification");
+          wss.clients.forEach(function each(client) {
+            if ( client.readyState === SocketServer.OPEN ) {
+              parsedMessage['id'] = uuidv4();
+              const stringMessage = JSON.stringify(parsedMessage);
+              client.send(stringMessage);
+            }
+            
+          });
+        break;
+
+
+    }
 
     
     
-    // console.log('User ' + messageP.username + ' said Hi' );
-    // console.log('User randomID of ' + parsedMessage.username + ' is ' + parsedMessage.id );
   });
-
- 
-
-  // ws.send('new message');
-
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
 });

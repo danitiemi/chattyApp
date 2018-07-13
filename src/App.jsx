@@ -10,12 +10,15 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: 'Shark'}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {
+        name: 'Shark'
+      }, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         // {
         //   id: 1,
         //   username: 'Bob',
         //   content: 'Has anyone seen my marbles?',
+        //   type: 'message'
         // },
         // {
         //   id: 2,
@@ -23,68 +26,82 @@ export default class App extends Component {
         //   content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
         // }
       ]
+    
     };
     this.onPost = this.onPost.bind(this);
-    this.onBroadcast = this.onBroadcast.bind(this);
-    this.socket = new WebSocket(`ws://localhost:3001/`);
+    //this.onBroadcast = this.onBroadcast.bind(this);
+    this.onNewName = this.onNewName.bind(this);
   }
 
-  onPost (username, content) {
-    
-    // const newId = this.state.messages.length + 2;
+  onPost (username, content, type) {
+    //console.log("We are in OnPOSt");
     const newMessage = {
       // id: newId,
-      username: username,
-      content: content
+      username: this.state.currentUser,
+      content: content,
+      type: type,
     };
-    // const messages = this.state.messages.concat(newMessage);
-    // this.setState({messages: messages});
+    console.log("test ",newMessage);
     this.socket.send(JSON.stringify(newMessage));
-    this.socket.addEventListener('message', this.onBroadcast);
-   
+    //this.socket.addEventListener('message', this.onBroadcast);
   }
 
-  onBroadcast (event) {
-    console.log(event);
-    const broadcastMessage = JSON.parse(event.data);
-    const messageObj = { 
-      id: broadcastMessage.id,
-      username: broadcastMessage.username,
-      content: broadcastMessage.content
+  onNewName (type, newUser, notification) {
+    const newNotification = {
+      type: type,
+      notification: notification,
+      username: newUser
     };
-    console.log(messageObj);
-    let messages = this.state.messages.concat(messageObj);
-    console.log('this.state', this.state);
-    console.log(messages, 'onBroadcast messages');
-    this.setState({ messages: messages });
+    console.log('newNotification', newNotification);
+    this.setState({ currentUser: newUser });
+    this.socket.send(JSON.stringify(newNotification));
+    //this.socket.addEventListener('message', this.onBroadcast);
   }
+
+  // onBroadcast (event) {
+  //   console.log("test ",event);
+  //   // const broadcastMessage = JSON.parse(event.data);
+  //   // console.log("pre: ", broadcastMessage);
+  //   // const messageObj = { 
+  //   //   id: broadcastMessage.id,
+  //   //   type: broadcastMessage.type,
+  //   //   content: broadcastMessage.notification
+  //   // };  
+  //   // console.log("hithere", messageObj);
+  //   // let messages = this.state.messages.concat(messageObj);
+  //   // // console.log('this.state', this.state);
+  //   // // console.log(messages, 'onBroadcast messages');
+  //   // this.setState({ messages: messages });
+  // };
 
   componentDidMount() {
+    //const url = window.location.hostname;
+    //this.socket = new WebSocket(`ws://${url}:3001`);
+    this.socket = new WebSocket("ws://localhost:3001");
+      this.socket.onmessage = (event) => {
+        // The socket event data is encoded as a JSON string.
+        // This line turns it into an object
+        const data = JSON.parse(event.data);
+        console.log("Test ", data);
+        switch(data.type) {
+          case "postMessage":
+              let newMessage = data;
+              let allMessages = this.state.messages.concat(newMessage);
+              this.setState({messages: allMessages});
+          // handle incoming message
+            break;
+          case "postNotification":
+            newMessage = data;
+            allMessages = this.state.messages.concat(newMessage);
+            this.setState({messages: allMessages});
+          // handle incoming notification
+            break;
+          default:
+          // show an error in the console if the message type is unknown
+            //throw new Error("Unknown event type " + data.type);
+        }
+      }
     
-    this.socket.onopen = function (event) {
-      console.log('Connected to server');
-
-      // console.log('event', event);
-      
-      // console.log(broadcastMessage);
-     
-      // switch(broadcastMessage.type) {
-      //   case 'id':
-      //     id = broadcastMessage.id;
-      //     // setUsername();
-      //     break;
-        
-      //   case 'username':
-      //     username = broadcastMessage.username;
-      //     break;
-
-      //   case 'content':
-      //     content = broadcastMessage.content;
-      //     break;
-      // }
-    }
-
-    console.log("componentDidMount <App />");
     // setTimeout(() => {
     //   console.log("Simulating incoming message");
     //   // Add a new message to the list of messages in the data store
@@ -101,9 +118,11 @@ export default class App extends Component {
       <div>
         <NavBar />
         <MessageList messages={ this.state.messages } />
-        <ChatBar currentUser={ this.state.currentUser.name } onPost={ this.onPost }/>
+        {/* <Notification messages={ this.state.messages.postNotification } /> */}
+        <ChatBar currentUser={this.state.currentUser} onNewName={ this.onNewName } onPost={ this.onPost }/>
       </div>
     );
+    console.log('postNotification' , this.state.messages.postNotification)
   }
 }
 
