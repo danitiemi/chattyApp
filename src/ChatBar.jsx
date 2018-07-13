@@ -28,7 +28,7 @@ export default class Chatbar extends Component {
   onNewUserName(event) {
     let notification = '';
     if(event.key === 'Enter') {
-      let currentUserName = this.props.currentUser;
+      let currentUserName = this.props.currentUser.name;
       if (currentUserName === undefined ) {
         let currentUserName = 'Anonymous';
         const type = 'postNotification';

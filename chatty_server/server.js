@@ -39,15 +39,6 @@ wss.on('connection', (ws) => {
             const stringMessage = JSON.stringify(parsedMessage);
             client.send(stringMessage);
           }
-          //   if ( parsedMessage.type === 'postNotification' ) {
-          //     parsedMessage['type'] = 'incomingNotification';
-          //     const stringNote = JSON.stringify(parsedMessage);
-          //     client.send(stringNote);
-          //     console.log(stringNote);
-          //   } else {
-              
-          //   }
-          // }
         });
         break;
 

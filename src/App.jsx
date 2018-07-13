@@ -11,7 +11,7 @@ export default class App extends Component {
 
     this.state = {
       currentUser: {
-        name: 'Shark'
+        name: 'Anonymous'
       }, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         // {
@@ -82,7 +82,7 @@ export default class App extends Component {
         // The socket event data is encoded as a JSON string.
         // This line turns it into an object
         const data = JSON.parse(event.data);
-        console.log("Test ", data);
+        // console.log("Test ", data);
         switch(data.type) {
           case "postMessage":
               let newMessage = data;
