@@ -26,7 +26,6 @@ export default class MessageList extends Component {
       <main className="messages">
         { messages }
         <div className="notification">
-        {/* <span className="notification-content"> { message.type.postNotification } </span> */}
         </div>
       </main>
     );

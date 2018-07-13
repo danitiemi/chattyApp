@@ -13,7 +13,7 @@ export default class App extends Component {
       currentUser: {
         name: 'Anonymous'
       }, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
+      messages: [ 
         // {
         //   id: 1,
         //   username: 'Bob',
@@ -25,7 +25,8 @@ export default class App extends Component {
         //   username: 'Anonymous',
         //   content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
         // }
-      ]
+      ],
+      counter: 0
     
     };
     this.onPost = this.onPost.bind(this);
@@ -78,29 +79,43 @@ export default class App extends Component {
     //const url = window.location.hostname;
     //this.socket = new WebSocket(`ws://${url}:3001`);
     this.socket = new WebSocket("ws://localhost:3001");
-      this.socket.onmessage = (event) => {
-        // The socket event data is encoded as a JSON string.
-        // This line turns it into an object
-        const data = JSON.parse(event.data);
-        // console.log("Test ", data);
-        switch(data.type) {
-          case "postMessage":
-              let newMessage = data;
-              let allMessages = this.state.messages.concat(newMessage);
-              this.setState({messages: allMessages});
-          // handle incoming message
-            break;
-          case "postNotification":
-            newMessage = data;
-            allMessages = this.state.messages.concat(newMessage);
+
+    this.socket.onopen = (event) => {
+      console.log("Connected to server");
+
+    };
+    
+    this.socket.onmessage = (event) => {
+      // The socket event data is encoded as a JSON string.
+      // This line turns it into an object
+      const data = JSON.parse(event.data);
+      // console.log("Test ", data);
+      if (data.type === 'number') {
+        this.setState({ counter: data.counter})
+      } else {
+      switch(data.type) {
+        case "postMessage":
+            let newMessage = data;
+            let allMessages = this.state.messages.concat(newMessage);
             this.setState({messages: allMessages});
-          // handle incoming notification
-            break;
-          default:
-          // show an error in the console if the message type is unknown
-            //throw new Error("Unknown event type " + data.type);
-        }
+        // handle incoming message
+          break;
+        case "postNotification":
+          newMessage = data;
+          allMessages = this.state.messages.concat(newMessage);
+          this.setState({messages: allMessages});
+        // handle incoming notification
+          break;
+        // case "connectedUsers":
+        //   currentCount = counter;
+        //   console.log(currentCount, "current count");
+        //   this.setState({counter: currentCount})
+        default:
+        // show an error in the console if the message type is unknown
+          //throw new Error("Unknown event type " + data.type);
       }
+    }
+    }
     
     // setTimeout(() => {
     //   console.log("Simulating incoming message");
@@ -116,13 +131,13 @@ export default class App extends Component {
     
     return (
       <div>
-        <NavBar />
+        <NavBar counter={ this.state.counter } />
         <MessageList messages={ this.state.messages } />
         {/* <Notification messages={ this.state.messages.postNotification } /> */}
         <ChatBar currentUser={this.state.currentUser} onNewName={ this.onNewName } onPost={ this.onPost }/>
       </div>
     );
-    console.log('postNotification' , this.state.messages.postNotification)
+    // console.log('postNotification' , this.state.messages.postNotification)
   }
 }
 
