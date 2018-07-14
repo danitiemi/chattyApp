@@ -1,5 +1,5 @@
 h1 {
-  color: tomato;
+  color: t#0f7b99;
 }
 
 body {
@@ -11,8 +11,8 @@ body {
 }
 
 .chatbar {
-  background: tomato;
-  border-top: 1px solid black;
+  background: #a5c126;
+  border-top: 1px solid #a5c126;
   bottom: 0;
   display: flex;
   left: 0;
@@ -23,7 +23,7 @@ body {
 
 .chatbar-message,
 .chatbar-username {
-  border: 1px solid black;
+  border: 1px solid #a5c126;
   display: block;
   height: 40px;
   line-height: 40px;
@@ -65,21 +65,28 @@ body {
   font-weight: 700;
 }
 
+.notification-content {
+  padding: 5px 20px;
+  color: #a5c126;
+  font-style: italic;
+}
+
 .navbar {
-  background: tomato;
-  border-bottom: 1px solid black;
+  background: #0f7b99;
+  border-bottom: 1px solid #a5c126;
   height: 60px;
   left: 0;
   padding: 0 10px;
   position: fixed;
   right: 0;
   top: 0;
+  font-size: 35px;
 }
 
 .navbar-brand {
-  color: inherit;
-  display: block;
-  float: left;
+  color: #a5c126;
+  // display: block;
+  // float: left;
   font-weight: 700;
   font-size: 28px;
   height: 60px;
@@ -88,13 +95,24 @@ body {
   text-decoration: none;
 }
 
+.fa-project-diagram {
+  float: left;
+  size: 6px;
+  color: #a5c126;
+  height: 60px;
+  margin-top: 0.08em;
+  margin-left: 10px; 
+}
+
 .counter {
   float:right;
   font-size: 21px;
-  line-height: 2.5;
+  line-height: 60px;
   margin-right:10px;
   margin-top: 2px;
+  color: #a5c126;
 }
+
 
 
 

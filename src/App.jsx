@@ -76,9 +76,9 @@ export default class App extends Component {
   // };
 
   componentDidMount() {
-    //const url = window.location.hostname;
-    //this.socket = new WebSocket(`ws://${url}:3001`);
-    this.socket = new WebSocket("ws://localhost:3001");
+    const url = window.location.hostname;
+    this.socket = new WebSocket(`ws://${url}:3001`);
+    // this.socket = new WebSocket("ws://localhost:3001");
 
     this.socket.onopen = (event) => {
       console.log("Connected to server");
