@@ -21,27 +21,23 @@ const wss = new SocketServer.Server({ server });
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 
-
 wss.on('connection', (ws) => {
   console.log('Client connected');
+
   let connectedUsers = {};
   connectedUsers['counter'] = wss.clients.size;
   connectedUsers['type']= 'number';
   connectedUsers = JSON.stringify(connectedUsers);
 
   wss.clients.forEach(function each(client) {
-      client.send(connectedUsers);
-      console.log(connectedUsers);   
+    client.send(connectedUsers);
   });
   
-
   ws.on('message', function incoming(message) {
-    // console.log(message);
     let parsedMessage = JSON.parse(message);
 
     switch(parsedMessage.type){
       case 'postMessage':
-       console.log("we are in messages");
         // Broadcast to everyone else.
         wss.clients.forEach(function each(client) {
           if ( client.readyState === SocketServer.OPEN ) {
@@ -50,27 +46,24 @@ wss.on('connection', (ws) => {
             client.send(stringMessage);
           }
         });
-        break;
+      break;
 
-        case 'postNotification':
-          console.log("We received notification");
-          wss.clients.forEach(function each(client) {
-            if ( client.readyState === SocketServer.OPEN ) {
-              parsedMessage['id'] = uuidv4();
-              const stringMessage = JSON.stringify(parsedMessage);
-              client.send(stringMessage);
-            }
-            
-          });
-        break;
-
-
-    }
-    
+      case 'postNotification':
+        wss.clients.forEach(function each(client) {
+          if ( client.readyState === SocketServer.OPEN ) {
+            parsedMessage['id'] = uuidv4();
+            const stringMessage = JSON.stringify(parsedMessage);
+            client.send(stringMessage);
+          } 
+        });
+      break;
+    }   
   });
+
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
     console.log('Client disconnected')
+    
     let connectedUsers = {};
     connectedUsers['counter'] = wss.clients.size;
     connectedUsers['type']= 'number';
@@ -78,7 +71,6 @@ wss.on('connection', (ws) => {
 
     wss.clients.forEach(function each(client) {
         client.send(connectedUsers);
-        console.log(connectedUsers);   
     });
 
   });

@@ -5,7 +5,6 @@ import Notification from './Notification.jsx';
 export default class MessageList extends Component {
   render() {
     const messages = this.props.messages.map( message => {
-      console.log('message list' , message);
       if (message.type === 'postNotification') {
         return <Notification 
         key={ message.id }
@@ -19,7 +18,6 @@ export default class MessageList extends Component {
         content={ message.content } />
       }
     });
-    console.log( 'messages', messages );
 
     return (  
       
