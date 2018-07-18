@@ -13,8 +13,7 @@ export default class App extends Component {
       currentUser: {
         name: 'Anonymous'
       }, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [ 
-      ],
+      messages: [ ],
       counter: 0
     
     };

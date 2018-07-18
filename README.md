@@ -44,4 +44,5 @@ Chatty App is a real-time web application that allows users to communicate with 
 * Clone the repository
 * Install the dependencies: npm install
 * Start the server: npm start
+* Start the WebSocket server: npm start
 * Open http://localhost:3000
