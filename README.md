@@ -2,7 +2,6 @@ Chatty App
 ===========
 
 !["Screenshot: Chatty App - 1 user"](https://github.com/danitiemi/chattyApp/blob/master/docs/chatty-1user.png?raw=true)
-!["Screenshot: Chatty App - 2 users"](https://github.com/danitiemi/chattyApp/blob/master/docs/chatty-2users.png?raw=true)
 
 
 Chatty App is a real-time web application that allows users to communicate with each other without having to register accounts. 
@@ -41,8 +40,24 @@ Chatty App is a real-time web application that allows users to communicate with 
 
 ### Getting Started
 
-* Clone the repository
+* Fork and clone this repository
+* In your package.json file change the repository url area to your new forked repository URL
 * Install the dependencies: npm install
 * Start the server: npm start
-* Start the WebSocket server: npm start
+* In another terminal window, in chatty_server: npm install
+* Start the chatty_server: npm start
 * Open http://localhost:3000
+
+
+### Chat with your friends!!!
+
+You can use Chatty App with your friends, as long as you are in the same LAN. To start chatting, just follow these steps:
+
+* Check your IP address in your computer settings
+* Start your servers 
+* Ask your friend(s) to replace the "https://localhost:3000" for "https://<YOUR-IP-ADDRESS>:3000"
+* Start chatting!
+
+!["Screenshot: Chatty App - 2 users"](https://github.com/danitiemi/chattyApp/blob/master/docs/chatty-2users.png?raw=true)
+
+
