@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
@@ -21,21 +21,28 @@ export default class App extends Component {
     this.onNewName = this.onNewName.bind(this);
   }
 
+  // when a new message is sent
   onPost (username, content, type) {
+    
     const newMessage = {
-      username: this.state.currentUser,
+      username: this.state.currentUser.name,
+      id: '',
       content: content,
-      type: type,
+      type: type
     };
+    
     this.socket.send(JSON.stringify(newMessage));
   }
 
-  onNewName (type, newUser, notification) {
+  // when the user changes to a new name 
+  onNewName (type, currentUser, notification) {
+    let newUser = { name: currentUser };
     const newNotification = {
       type: type,
       notification: notification,
       username: newUser
     };
+    
     this.setState({ currentUser: newUser });
     this.socket.send(JSON.stringify(newNotification));
   }
@@ -58,8 +65,8 @@ export default class App extends Component {
           case "postMessage":
               let newMessage = data;
               let allMessages = this.state.messages.concat(newMessage);
-              this.setState({messages: allMessages});
-            break;
+              this.setState({messages: allMessages});           
+              break;
           case "postNotification":
             newMessage = data;
             allMessages = this.state.messages.concat(newMessage);
@@ -70,6 +77,7 @@ export default class App extends Component {
       }
     }
   }
+
   render() {
     
     return (
@@ -79,6 +87,7 @@ export default class App extends Component {
         <ChatBar currentUser={this.state.currentUser} onNewName={ this.onNewName } onPost={ this.onPost }/>
       </div>
     );
+  
   }
 }
 
